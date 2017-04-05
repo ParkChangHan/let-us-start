@@ -9,7 +9,6 @@ public class CalcApp {
     public double calc(String[] tokens) {
     	Stack st = new Stack();
     	Stack st1 = new Stack();
-    	double sum = 0;
     	boolean p = false;
     	boolean minus = false;
     	for(int i = 0 ; i < tokens.length; i++){
