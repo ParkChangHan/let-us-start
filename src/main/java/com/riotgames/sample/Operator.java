@@ -18,7 +18,7 @@ public enum Operator {
             return firstOperand - secondOperand;
         }
     },
-    MUL("*") {
+    MUL("x") {
         @Override
         public double evaluate(double firstOperand, double secondOperand) {
             return firstOperand * secondOperand;
