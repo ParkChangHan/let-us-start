@@ -11,14 +11,15 @@ public class CalcApp {
     	Deque<String> st = new ArrayDeque<>();
     	Deque<String> st1 = new ArrayDeque<>();
     	boolean p = false;
-    	
-    	for(int i = 0 ; i < tokens.length; i++){
+
+   	for(int i = 0 ; i < tokens.length; i++){
     		st.push(tokens[i]);
-    		if(st.peek().equals("(")){
+    		if("(".equals(st.peek())){
+    			
     			st.pop();
     			i = bracket(st,tokens,i+1);
     		}
-    		if(st.peek().equals("x") || st.peek().equals("/")){
+    		if("x".equals(st.peek()) || "/".equals(st.peek())){
     			st1.push(st.pop());
     			p = true;
     			continue;
@@ -52,7 +53,7 @@ public class CalcApp {
     	int count = 0;
     	for(j = index; j < tokens.length; j++){
     		st.push(tokens[j]);
-    		if(tokens[j].equals(")")){
+    		if(")".equals(tokens[j])){
 				st.pop();
 				String[] temp_tokens = new String[count];
 				for(int i = count-1 ; i >= 0; i--){
@@ -61,13 +62,13 @@ public class CalcApp {
 				st.push(String.valueOf(calc(temp_tokens)));
 				break;
 			}
-			if(st.peek().equals("(")){
+			if("(".equals(st.peek())){
 				st.pop();
 				j = bracket(st, tokens, j+1);
 			}
 			count++;
 		}
-    	return j;
+	return j;
     }
 	
 	public static void main( String[] args ) {
