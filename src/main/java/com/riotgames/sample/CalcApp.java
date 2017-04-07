@@ -1,16 +1,17 @@
 package com.riotgames.sample;
 
 import java.util.Arrays;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 /**
  * Calculator application
  */
 public class CalcApp {
     public double calc(String[] tokens) {
-    	Stack st = new Stack();
-    	Stack st1 = new Stack();
+    	Deque<String> st = new ArrayDeque<>();
+    	Deque<String> st1 = new ArrayDeque<>();
     	boolean p = false;
-    	boolean minus = false;
+    	
     	for(int i = 0 ; i < tokens.length; i++){
     		st.push(tokens[i]);
     		if(st.peek().equals("(")){
@@ -23,7 +24,7 @@ public class CalcApp {
     			continue;
     		}
     		if(p){
-    			st.push(priority((String)st.pop(),(String)st1.pop(),(String)st.pop()));
+    			st.push(priority(st.pop(),st1.pop(),st.pop()));
     			p = false;
     		}
     	}
@@ -32,12 +33,13 @@ public class CalcApp {
     	}
     	
     	for(int i = 0 ; i < st1.size()-1;){
-    		st1.push(priority((String)st1.pop(),(String)st1.pop(),(String)st1.pop()));
+    		st1.push(priority(st1.pop(),st1.pop(),st1.pop()));
     	}
-    	return Double.parseDouble((String)st1.pop());
+    	return Double.parseDouble(st1.pop());
 
     }
     
+    //java com.riotgames.sample.CalcApp '(' 1 + 2 ')' + '(' 3 - 2 ')' x '(' 3 + 4 ')' - '(' 4 + 5 x '(' 5 + 6 ')' ')' + 4
     public String priority(String first, String op, String second){
     	Operator operator = Operator.findOperator(op);
     	double firstOperand = Double.parseDouble(first);
@@ -45,17 +47,16 @@ public class CalcApp {
     	return String.valueOf(operator.evaluate(firstOperand, secondOperand));
     }
     
-    public int bracket(Stack st, String[] tokens, int index){
+    public int bracket(Deque<String> st, String[] tokens, int index){
     	int j;
     	int count = 0;
     	for(j = index; j < tokens.length; j++){
     		st.push(tokens[j]);
     		if(tokens[j].equals(")")){
 				st.pop();
-				int length = j - st.size()-1;
 				String[] temp_tokens = new String[count];
 				for(int i = count-1 ; i >= 0; i--){
-					temp_tokens[i]=(String)st.pop();
+					temp_tokens[i]=st.pop();
 				}
 				st.push(String.valueOf(calc(temp_tokens)));
 				break;
@@ -67,7 +68,9 @@ public class CalcApp {
 			count++;
 		}
     	return j;
-    }   public static void main( String[] args ) {
+    }
+	
+	public static void main( String[] args ) {
         final CalcApp app = new CalcApp();
         final StringBuilder outputs = new StringBuilder();
         Arrays.asList(args).forEach(value -> outputs.append(value + " "));
